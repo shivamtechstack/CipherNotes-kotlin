@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "740627040730",
+    "project_id": "ciphernotes-c7051",
+    "storage_bucket": "ciphernotes-c7051.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:740627040730:android:e91658a2dc76e8d512d8e3",
+        "android_client_info": {
+          "package_name": "com.sycodes.ciphernotes"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZx7pg7T3YngvWIKy7RFOwB1JivN4tQxg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
