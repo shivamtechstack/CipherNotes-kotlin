@@ -8,13 +8,14 @@
     tools:context=".fragments.SignUpFragment">
 
     <ImageView
+        android:id="@+id/backArrow_signUp"
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_marginTop="25dp"
-        android:tint="@color/buttonColor"
         android:layout_marginHorizontal="25dp"
         android:src="@drawable/back_arrow"
-        android:layout_gravity="start"/>
+        android:layout_gravity="start"
+        app:tint="@color/buttonColor" />
 
     <TextView
         android:layout_width="match_parent"
@@ -31,7 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="40dp"
         android:orientation="vertical">
 
         <TextView
@@ -57,6 +58,7 @@
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/email_SignUp"
                     android:layout_width="match_parent"
                     android:layout_height="65dp"
                     android:fontFamily="@font/crimson_pro"
@@ -83,6 +85,7 @@
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/password_SignUp"
                     android:layout_width="match_parent"
                     android:layout_height="65dp"
                     android:inputType="textPassword"
@@ -110,6 +113,7 @@
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/confirmPassword_SignUp"
                     android:layout_width="match_parent"
                     android:layout_height="65dp"
                     android:inputType="textPassword"
@@ -122,6 +126,7 @@
         </androidx.cardview.widget.CardView>
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/SignUpButton"
             android:layout_marginTop="15dp"
             android:layout_width="match_parent"
             android:layout_height="60dp"
@@ -154,6 +159,7 @@
             android:text="- Or sign up with -"/>
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/google_SignUp_Button"
             android:layout_marginTop="15dp"
             android:layout_width="match_parent"
             android:layout_height="50dp"
