@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="preloaded_fonts" translatable="false">
+        <item>@font/archivo</item>
+        <item>@font/crimson_pro</item>
+        <item>@font/crimson_pro_bold</item>
+        <item>@font/crimson_pro_medium</item>
+        <item>@font/ledger</item>
+        <item>@font/oswald</item>
+    </array>
+</resources>
