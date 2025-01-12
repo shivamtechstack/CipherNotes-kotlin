@@ -29,16 +29,41 @@
         android:layout_marginVertical="8dp"
         android:layout_marginHorizontal="25dp"
         android:background="@color/forgotPasswordColor"/>
+
+    <TextView
+        android:id="@+id/email_textBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:layout_marginBottom="5dp"
+        android:gravity="center"
+        android:hint="Verification link sent to "
+        android:layout_marginHorizontal="25dp"
+        android:fontFamily="@font/crimson_pro"/>
+    <TextView
+        android:id="@+id/wrongEmailButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:gravity="end"
+        android:layout_marginHorizontal="25dp"
+        android:textStyle="bold"
+        android:textColor="@color/buttonColor"
+        android:fontFamily="@font/crimson_pro"
+        android:text="Wrong email"/>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="16sp"
         android:gravity="center"
+        android:layout_marginTop="8dp"
         android:layout_marginHorizontal="25dp"
         android:fontFamily="@font/crimson_pro"
-        android:text="Check your email to verify your account. Please look for a verification email from us, and click on the link provided to complete your registration. If you don't see the email, check your spam or junk folder."/>
+        android:text="Please look for a verification email from us, and click on the link provided to complete your registration. If you don't see the email, check your spam or junk folder."/>
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/openEmailButton"
         android:layout_marginTop="15dp"
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -67,6 +92,7 @@
             android:text="Haven't received it yet? "/>
 
         <TextView
+            android:id="@+id/requestNewLink"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"

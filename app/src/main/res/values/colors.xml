@@ -5,4 +5,5 @@
     <color name="buttonColor">#0039a6</color>
     <color name="forgotPasswordColor">#9E9E9E</color>
     <color name="lightText">#757575</color>
+    <color name="orange">#FFD580</color>
 </resources>
