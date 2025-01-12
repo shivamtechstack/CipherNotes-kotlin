@@ -54,6 +54,7 @@ class EmailVerifyFragment : Fragment() {
     private fun openEmailApps() {
         val intent = Intent(Intent.ACTION_MAIN).apply {
             addCategory(Intent.CATEGORY_APP_EMAIL)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         }
 
         try {
@@ -106,6 +107,11 @@ class EmailVerifyFragment : Fragment() {
                 }
             }
         })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        startVerificationCheck()
     }
 
     override fun onDestroyView() {

@@ -29,7 +29,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="18dp"
+        android:layout_marginBottom="16dp"
         android:fontFamily="@font/crimson_pro"
         android:layout_marginHorizontal="25dp"
         android:text="Login to your Account"
@@ -45,7 +45,7 @@
             android:maxLines="4"
             android:visibility="gone"
             android:textColor="@color/orange"
-            android:layout_marginBottom="4dp"/>
+            android:layout_marginBottom="7dp"/>
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -152,10 +152,10 @@
             android:textColor="@color/lightText"
             android:fontFamily="@font/crimson_pro"
             android:layout_marginHorizontal="25dp"
-            android:text="- Or sign in with -"/>
+            android:text="------ Or ------"/>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/signInGoogle"
+            android:id="@+id/google_SignIn_Button"
             android:layout_marginTop="15dp"
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -164,12 +164,29 @@
             app:cardCornerRadius="8dp"
             android:elevation="8dp">
 
-            <ImageView
-                android:layout_width="90dp"
-                android:layout_height="55dp"
-                android:layout_gravity="center_horizontal"
-                android:src="@drawable/google1" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="horizontal">
 
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:src="@drawable/google1" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textSize="22sp"
+                    android:layout_marginStart="15dp"
+                    android:fontFamily="@font/crimson_pro_medium"
+                    android:text="Sign in with Google"
+                    />
+
+            </LinearLayout>
         </androidx.cardview.widget.CardView>
 
     </LinearLayout>
