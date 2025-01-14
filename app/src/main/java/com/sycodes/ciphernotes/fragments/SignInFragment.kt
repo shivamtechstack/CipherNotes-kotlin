@@ -9,10 +9,10 @@ import android.view.ViewGroup
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
-import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.sycodes.ciphernotes.NotesActivity
 import com.sycodes.ciphernotes.R
 import com.sycodes.ciphernotes.databinding.FragmentSignInBinding
+
 
 class SignInFragment : Fragment() {
 
@@ -41,11 +41,18 @@ class SignInFragment : Fragment() {
                 ?.addToBackStack(null)
                 ?.commit()
         }
+
         binding.signInButton.setOnClickListener {
             userSignIn()
         }
+
+        binding.googleSignInButton.setOnClickListener {
+
+        }
+
         return binding.root
     }
+
     private fun navigateToFragment(fragment: Fragment) {
         fragmentManager?.beginTransaction()
             ?.replace(R.id.loginSignupfragmentContainerView, fragment)
@@ -57,29 +64,23 @@ class SignInFragment : Fragment() {
         val email = binding.signInEmail.text.toString().trim()
         val password = binding.signInPassword.text.toString().trim()
 
-        // Validate input
         if (email.isEmpty() || password.isEmpty()) {
             showWarning("Please enter both email and password.")
             return
         }
 
-        // Show a loading indicator
-        binding.progressBar.visibility = View.VISIBLE
-        binding.signInButton.isEnabled = false
+        showProgressBar()
 
         authentication.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
-                binding.progressBar.visibility = View.GONE
-                binding.signInButton.isEnabled = true
+                hideProgressBar()
 
                 if (task.isSuccessful) {
                     val user = authentication.currentUser
                     if (user?.isEmailVerified == true) {
-                        // Navigate to Notes Activity
                         startActivity(Intent(requireContext(), NotesActivity::class.java))
                         requireActivity().finish()
                     } else {
-                        // Redirect to Email Verification Fragment
                         navigateToFragment(EmailVerifyFragment())
                     }
                 } else {
@@ -87,8 +88,7 @@ class SignInFragment : Fragment() {
                 }
             }
             .addOnFailureListener { exception ->
-                binding.progressBar.visibility = View.GONE
-                binding.signInButton.isEnabled = true
+              hideProgressBar()
                 showWarning("Sign in failed: ${exception.localizedMessage}")
             }
     }
@@ -124,5 +124,13 @@ class SignInFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+    private fun showProgressBar(){
+        binding.progressBar.visibility = View.VISIBLE
+        binding.signInButton.isEnabled = false
+    }
+    private fun hideProgressBar(){
+        binding.progressBar.visibility = View.GONE
+        binding.signInButton.isEnabled = true
     }
 }

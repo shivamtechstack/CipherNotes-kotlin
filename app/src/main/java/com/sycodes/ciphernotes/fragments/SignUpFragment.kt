@@ -53,10 +53,17 @@ class SignUpFragment : Fragment() {
         return binding.root
     }
     private fun createUser(email: String, password: String) {
+
+        binding.progressBarSignUp.visibility = View.VISIBLE
+        binding.SignUpButton.isEnabled = false
+
         authentication.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    // Send a verification email
+
+                    binding.progressBarSignUp.visibility = View.GONE
+                    binding.SignUpButton.isEnabled = true
+
                     val user = authentication.currentUser
                     user?.sendEmailVerification()?.addOnCompleteListener { emailTask ->
                         if (emailTask.isSuccessful) {
@@ -72,38 +79,16 @@ class SignUpFragment : Fragment() {
     }
 
     private fun handleSignUpError(email: String, password: String, exception: Exception?) {
-        if (exception is FirebaseAuthUserCollisionException) {
-            // Email already in use
-            authentication.signInWithEmailAndPassword(email, password)
-                .addOnSuccessListener {
-                    if (it.user?.isEmailVerified == false) {
-                        // Resend verification email and update password
-                        it.user?.sendEmailVerification()?.addOnCompleteListener { emailTask ->
-                            if (emailTask.isSuccessful) {
-                                authentication.currentUser?.updatePassword(password)
-                                    ?.addOnCompleteListener { passwordTask ->
-                                        if (passwordTask.isSuccessful) {
-                                            showWarning("Verification email resent. Check your inbox.")
-                                            navigateToEmailVerifyFragment()
-                                        } else {
-                                            showWarning("Error updating password: ${passwordTask.exception?.localizedMessage}")
-                                        }
-                                    }
-                            } else {
-                                showWarning("Error resending verification email: ${emailTask.exception?.localizedMessage}")
-                            }
-                        }
-                    } else {
-                        showWarning("Email is already registered and verified.")
-                    }
-                }
-                .addOnFailureListener {
-                    showWarning("Error signing in: ${it.localizedMessage}")
-                }
-        } else {
-            showWarning("Sign-up failed: ${exception?.localizedMessage}")
+            binding.progressBarSignUp.visibility = View.GONE
+            binding.SignUpButton.isEnabled = true
+
+            if (exception is FirebaseAuthUserCollisionException) {
+                // Email already in use
+                showWarning("This email is already registered. Please use the 'Forgot Password' option if you need to reset your password.")
+            } else {
+                showWarning("Sign-up failed: ${exception?.localizedMessage}")
+            }
         }
-    }
 
     private fun navigateToEmailVerifyFragment() {
         fragmentManager?.beginTransaction()
