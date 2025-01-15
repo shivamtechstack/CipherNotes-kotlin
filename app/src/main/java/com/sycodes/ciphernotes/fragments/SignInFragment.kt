@@ -1,17 +1,21 @@
 package com.sycodes.ciphernotes.fragments
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.sycodes.ciphernotes.NotesActivity
 import com.sycodes.ciphernotes.R
 import com.sycodes.ciphernotes.databinding.FragmentSignInBinding
+import com.sycodes.ciphernotes.utility.GoogleSignIn
 
 
 class SignInFragment : Fragment() {
@@ -19,10 +23,22 @@ class SignInFragment : Fragment() {
     private var _binding: FragmentSignInBinding? = null
     private val binding get() = _binding!!
     private lateinit var authentication : FirebaseAuth
+    private lateinit var GoogleSignIn : GoogleSignIn
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         authentication = FirebaseAuth.getInstance()
+        GoogleSignIn = GoogleSignIn(this) { success, user ->
+            if (success) {
+                hideProgressBar()
+                Toast.makeText(requireContext(), "Signed in as: ${user?.email}", Toast.LENGTH_SHORT).show()
+                startActivity(Intent(requireContext(), NotesActivity::class.java))
+                requireActivity().finish()
+            } else {
+                hideProgressBar()
+                showWarning("Sign in failed.")
+            }
+        }
     }
 
     override fun onCreateView(
@@ -43,14 +59,22 @@ class SignInFragment : Fragment() {
         }
 
         binding.signInButton.setOnClickListener {
+            showProgressBar()
+            hideKeyboard()
             userSignIn()
         }
 
         binding.googleSignInButton.setOnClickListener {
-
+            GoogleSignIn.signIn()
         }
 
         return binding.root
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        GoogleSignIn.handleSignInResult(requestCode, resultCode, data)
     }
 
     private fun navigateToFragment(fragment: Fragment) {
@@ -132,5 +156,10 @@ class SignInFragment : Fragment() {
     private fun hideProgressBar(){
         binding.progressBar.visibility = View.GONE
         binding.signInButton.isEnabled = true
+    }
+    private fun hideKeyboard() {
+        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val view = requireActivity().currentFocus ?: View(requireContext())
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 }

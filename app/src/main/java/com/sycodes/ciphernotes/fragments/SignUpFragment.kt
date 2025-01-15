@@ -1,14 +1,20 @@
 package com.sycodes.ciphernotes.fragments
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
+import com.sycodes.ciphernotes.NotesActivity
 import com.sycodes.ciphernotes.R
 import com.sycodes.ciphernotes.databinding.FragmentSignUpBinding
+import com.sycodes.ciphernotes.utility.GoogleSignIn
 
 
 class SignUpFragment : Fragment() {
@@ -16,11 +22,23 @@ class SignUpFragment : Fragment() {
     private var _binding: FragmentSignUpBinding? = null
     private val binding get() = _binding!!
     private lateinit var authentication : FirebaseAuth
-
+    private lateinit var googleSignIn: GoogleSignIn
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         authentication = FirebaseAuth.getInstance()
+
+        googleSignIn = GoogleSignIn(this) { success, user ->
+            if (success) {
+                hideProgressBar()
+                Toast.makeText(requireContext(), "Signed in as: ${user?.email}", Toast.LENGTH_SHORT).show()
+                startActivity(Intent(requireContext(), NotesActivity::class.java))
+                requireActivity().finish()
+            } else {
+                hideProgressBar()
+                showWarning("Sign in failed.")
+            }
+        }
 
     }
 
@@ -35,6 +53,7 @@ class SignUpFragment : Fragment() {
         }
 
         binding.SignUpButton.setOnClickListener {
+            hideKeyboard()
             val email = binding.emailSignUp.text.toString()
             val password = binding.passwordSignUp.text.toString()
             val confirmPassword = binding.confirmPasswordSignUp.text.toString()
@@ -50,12 +69,23 @@ class SignUpFragment : Fragment() {
             }
         }
 
+        binding.googleSignUpButton.setOnClickListener {
+            showProgressBar()
+            googleSignIn.signIn()
+        }
+
         return binding.root
     }
+
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        googleSignIn.handleSignInResult(requestCode, resultCode, data)
+    }
+
     private fun createUser(email: String, password: String) {
 
-        binding.progressBarSignUp.visibility = View.VISIBLE
-        binding.SignUpButton.isEnabled = false
+        showProgressBar()
 
         authentication.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
@@ -79,8 +109,7 @@ class SignUpFragment : Fragment() {
     }
 
     private fun handleSignUpError(email: String, password: String, exception: Exception?) {
-            binding.progressBarSignUp.visibility = View.GONE
-            binding.SignUpButton.isEnabled = true
+           hideProgressBar()
 
             if (exception is FirebaseAuthUserCollisionException) {
                 // Email already in use
@@ -100,6 +129,19 @@ class SignUpFragment : Fragment() {
     private fun showWarning(message: String) {
         binding.signUpWarningView.visibility = View.VISIBLE
         binding.signUpWarningView.text = message
+    }
+    private fun showProgressBar(){
+        binding.progressBarSignUp.visibility = View.VISIBLE
+        binding.SignUpButton.isEnabled = false
+    }
+    private fun hideProgressBar(){
+        binding.progressBarSignUp.visibility = View.GONE
+        binding.SignUpButton.isEnabled = true
+    }
+    private fun hideKeyboard() {
+        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val view = requireActivity().currentFocus ?: View(requireContext())
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
     override fun onDestroyView() {
         super.onDestroyView()
