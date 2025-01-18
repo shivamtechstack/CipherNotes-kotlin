@@ -6,6 +6,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.sycodes.ciphernotes.data.Note
 
 @Dao
@@ -15,6 +16,9 @@ interface NoteDao {
 
     @Delete
     suspend fun deleteNote(note: Note)
+
+    @Update
+    suspend fun updateNote(note: Note)
 
     @Query("SELECT * FROM notes_table ORDER BY lastModified DESC")
     fun getAllNotes(): LiveData<List<Note>>

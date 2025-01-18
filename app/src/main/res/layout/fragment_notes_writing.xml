@@ -1,14 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".fragments.NotesWritingFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+  <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+      android:padding="8dp">
 
-</FrameLayout>
+      <ImageView
+          android:layout_width="35dp"
+          android:layout_height="35dp"
+          android:src="@drawable/back_arrow"/>
+
+      <ImageView
+          android:id="@+id/saveButton"
+          android:layout_width="23dp"
+          android:layout_height="30dp"
+          android:layout_marginEnd="8dp"
+          android:layout_alignParentRight="true"
+          android:src="@drawable/check_24"/>
+
+  </RelativeLayout>
+
+    <EditText
+        android:id="@+id/NoteTitle"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginHorizontal="15dp"
+        android:hint="Title"/>
+
+    <EditText
+        android:id="@+id/NoteContent"
+        android:layout_width="match_parent"
+        android:background="@null"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginTop="10dp"
+        android:textSize="14sp"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>

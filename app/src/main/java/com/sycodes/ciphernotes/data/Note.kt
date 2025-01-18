@@ -9,8 +9,6 @@ data class Note(
     val id: String = "",
     val title: String = "",
     val content: String = "",
-    val dateCreated: Int = 0,
-    val lastModified: Int = 0,
-    val isPinned: Boolean = false,
-    val isLocked: Boolean = false,
+    val dateCreated: String = "",
+    val lastModified: String = "",
 )

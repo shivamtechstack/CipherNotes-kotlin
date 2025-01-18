@@ -35,7 +35,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_margin="30dp"
-        android:id="@+id/notesFloatingActionButton"
+        android:id="@+id/AddNoteFloatingActionButton"
         android:layout_gravity="bottom|end"
         style="@style/Widget.MaterialComponents.FloatingActionButton"
         android:layout_width="wrap_content"
