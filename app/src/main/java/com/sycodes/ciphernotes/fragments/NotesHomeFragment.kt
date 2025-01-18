@@ -26,6 +26,13 @@ class NotesHomeFragment : Fragment() {
     ): View {
         binding = FragmentNotesHomeBinding.inflate(inflater, container, false)
         drawerSetup()
+        binding.AddNoteFloatingActionButton.setOnClickListener {
+            fragmentManager?.beginTransaction()?.apply {
+                replace(R.id.notesFragmentContainer, NotesWritingFragment())
+                addToBackStack(null)
+                commit()
+            }
+        }
 
         return binding.root
     }

@@ -5,56 +5,44 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.sycodes.ciphernotes.R
+import androidx.lifecycle.ViewModelProvider
+import com.sycodes.ciphernotes.data.Note
+import com.sycodes.ciphernotes.databinding.FragmentNotesWritingBinding
+import com.sycodes.ciphernotes.utility.CurrentDateAndTime
+import com.sycodes.ciphernotes.viewmodel.NoteViewModel
+import java.util.UUID
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [NotesWritingFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class NotesWritingFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private lateinit var binding: FragmentNotesWritingBinding
+    private lateinit var noteViewModel: NoteViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+        noteViewModel = ViewModelProvider(this)[NoteViewModel::class.java]
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_notes_writing, container, false)
-    }
+    ): View {
+        binding = FragmentNotesWritingBinding.inflate(inflater, container, false)
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment NotesWritingFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            NotesWritingFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+        binding.saveButton.setOnClickListener {
+            saveNote()
+        }
+        return binding.root
+    }
+    private fun saveNote(){
+        val title = binding.NoteTitle.text
+        val content = binding.NoteContent.text
+        val currentDateAndTime= CurrentDateAndTime().getCurrentDateTime()
+        val note = Note(id = UUID.randomUUID().toString(), title=title.toString(), content=content.toString(), dateCreated = currentDateAndTime, lastModified = currentDateAndTime)
+
+        noteViewModel.addNote(note)
+
+    }
+    override fun onDestroy() {
+        super.onDestroy()
+
     }
 }
