@@ -6,17 +6,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.sycodes.ciphernotes.NoteAdapter
 import com.sycodes.ciphernotes.R
 import com.sycodes.ciphernotes.databinding.FragmentNotesHomeBinding
+import com.sycodes.ciphernotes.viewmodel.NoteViewModel
 
 
 class NotesHomeFragment : Fragment() {
 
     private lateinit var binding: FragmentNotesHomeBinding
     private lateinit var toggle: ActionBarDrawerToggle
+    private lateinit var noteViewModel: NoteViewModel
+    private lateinit var noteAdapter: NoteAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        noteViewModel = ViewModelProvider(this)[NoteViewModel::class.java]
 
     }
 
@@ -33,6 +40,15 @@ class NotesHomeFragment : Fragment() {
                 commit()
             }
         }
+        noteAdapter = NoteAdapter(emptyList(), { note ->
+        })
+        binding.notesRecyclerView.adapter = noteAdapter
+        binding.notesRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+        noteViewModel.allNotes.observe(viewLifecycleOwner) { notes ->
+            noteAdapter.updateNotes(notes)
+        }
+
 
         return binding.root
     }
