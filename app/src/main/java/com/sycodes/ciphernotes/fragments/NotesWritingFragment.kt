@@ -32,6 +32,7 @@ class NotesWritingFragment : Fragment() {
         }
         return binding.root
     }
+
     private fun saveNote(){
         val title = binding.NoteTitle.text
         val content = binding.NoteContent.text
@@ -41,6 +42,7 @@ class NotesWritingFragment : Fragment() {
         noteViewModel.addNote(note)
 
     }
+
     override fun onDestroy() {
         super.onDestroy()
 
