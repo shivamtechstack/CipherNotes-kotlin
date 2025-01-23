@@ -7,19 +7,25 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.sycodes.ciphernotes.data.Note
 
-class NoteAdapter(private var notes: List<Note>, private val listener: (Note) -> Unit) :
+class NoteAdapter(private var notes: List<Note>, private val listener: (Note) -> Unit, private val onOptionsMenuClicked: (View) -> Unit) :
     RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
 
     class NoteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val noteTitle: TextView = itemView.findViewById(R.id.AllNotesTitle)
         private val noteContent: TextView = itemView.findViewById(R.id.allNotesContent)
         private val noteTime: TextView = itemView.findViewById(R.id.AllNotesTime)
+        private val optionsButton: TextView = itemView.findViewById(R.id.optionsButton)
 
-        fun bind(note: Note, listener: (Note) -> Unit) {
+        fun bind(note: Note, listener: (Note) -> Unit, onOptionsMenuClicked: (View) -> Unit) {
             noteTitle.text = note.title
             noteContent.text = note.content
             noteTime.text = note.lastModified
+
             itemView.setOnClickListener { listener(note) }
+
+            optionsButton.setOnClickListener {
+                onOptionsMenuClicked(it)
+            }
         }
     }
 
@@ -32,7 +38,7 @@ class NoteAdapter(private var notes: List<Note>, private val listener: (Note) ->
     override fun getItemCount(): Int = notes.size
 
     override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
-        holder.bind(notes[position], listener)
+        holder.bind(notes[position], listener, onOptionsMenuClicked)
     }
 
     fun updateNotes(newNotes: List<Note>) {

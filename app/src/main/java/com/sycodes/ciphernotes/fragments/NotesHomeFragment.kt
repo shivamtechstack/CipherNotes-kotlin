@@ -13,7 +13,6 @@ import com.sycodes.ciphernotes.R
 import com.sycodes.ciphernotes.databinding.FragmentNotesHomeBinding
 import com.sycodes.ciphernotes.viewmodel.NoteViewModel
 
-
 class NotesHomeFragment : Fragment() {
 
     private lateinit var binding: FragmentNotesHomeBinding
@@ -40,8 +39,28 @@ class NotesHomeFragment : Fragment() {
                 commit()
             }
         }
-        noteAdapter = NoteAdapter(emptyList(), { note ->
-        })
+
+        noteAdapter = NoteAdapter(emptyList(),
+            { note ->
+            val bundle = Bundle().apply {
+                putString("noteId", note.id)
+                putString("noteTitle", note.title)
+                putString("noteContent", note.content)
+                putString("noteDateCreated", note.dateCreated)
+            }
+            val notesWritingFragment = NotesWritingFragment().apply {
+                arguments = bundle
+            }
+            fragmentManager?.beginTransaction()?.apply {
+                replace(R.id.notesFragmentContainer, notesWritingFragment)
+                addToBackStack(null)
+                commit()
+            }
+        },
+            { note ->
+                popBottomSheet(note)
+            })
+
         binding.notesRecyclerView.adapter = noteAdapter
         binding.notesRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
@@ -49,9 +68,15 @@ class NotesHomeFragment : Fragment() {
             noteAdapter.updateNotes(notes)
         }
 
-
         return binding.root
     }
+
+    private fun popBottomSheet(note: View) {
+
+
+
+    }
+
     private fun drawerSetup(){
         toggle = ActionBarDrawerToggle(
             requireActivity(),

@@ -11,4 +11,6 @@ data class Note(
     val content: String = "",
     val dateCreated: String = "",
     val lastModified: String = "",
+    val isSynced: Boolean = false,
+    val idDeleted: Boolean = false
 )

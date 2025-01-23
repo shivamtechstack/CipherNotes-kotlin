@@ -9,27 +9,18 @@ import kotlinx.coroutines.withContext
 
 class NoteRepository(private val noteDao: NoteDao, private val firestoreRepository: FirestoreRepository) {
 
-    val allNotes : LiveData<List<Note>> = noteDao.getAllNotes()
+    val allNotes: LiveData<List<Note>> = noteDao.getAllNotes()
 
-    suspend fun addNote(note : Note){
-        noteDao.insertNote(note)
-        withContext(Dispatchers.IO) {
-            firestoreRepository.addNote(note)
-        }
-    }
-
-    suspend fun deleteNote(note : Note) {
-        noteDao.deleteNote(note)
-        withContext(Dispatchers.IO) {
-            firestoreRepository.deleteNote(note)
-        }
-    }
-
-    suspend fun syncNotesFromFirebase() {
-        val firestoreNotes =
-            firestoreRepository.getAllNotes().get().await().toObjects(Note::class.java)
-        firestoreNotes.forEach { note ->
+    suspend fun addOrUpdateNote(note: Note){
+        withContext(Dispatchers.IO){
             noteDao.insertNote(note)
         }
     }
+
+    suspend fun deleteNote(note: Note){
+        withContext(Dispatchers.IO){
+            noteDao.delete(note.id)
+        }
+    }
+
 }

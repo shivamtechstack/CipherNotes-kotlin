@@ -15,10 +15,15 @@ import java.util.UUID
 class NotesWritingFragment : Fragment() {
     private lateinit var binding: FragmentNotesWritingBinding
     private lateinit var noteViewModel: NoteViewModel
+    private var dateAndTime: String? = null
+
+    private var existingNoteId: String? = null
+    private var isEditMode = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         noteViewModel = ViewModelProvider(this)[NoteViewModel::class.java]
+        dateAndTime = CurrentDateAndTime().getCurrentDateTime()
     }
 
     override fun onCreateView(
@@ -26,21 +31,51 @@ class NotesWritingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentNotesWritingBinding.inflate(inflater, container, false)
+        binding.dateAndTimeView.text = dateAndTime
+
+        arguments?.let {
+            existingNoteId = it.getString("noteId")
+            val title = it.getString("noteTitle")
+            val content = it.getString("noteContent")
+
+            if (existingNoteId != null) {
+                isEditMode = true
+                binding.NoteTitle.setText(title)
+                binding.NoteContent.setText(content)
+            }
+        }
 
         binding.saveButton.setOnClickListener {
-            saveNote()
+            saveOrUpdateNote()
         }
         return binding.root
     }
 
-    private fun saveNote(){
-        val title = binding.NoteTitle.text
-        val content = binding.NoteContent.text
-        val currentDateAndTime= CurrentDateAndTime().getCurrentDateTime()
-        val note = Note(id = UUID.randomUUID().toString(), title=title.toString(), content=content.toString(), dateCreated = currentDateAndTime, lastModified = currentDateAndTime)
+    private fun saveOrUpdateNote() {
+        val title = binding.NoteTitle.text.toString()
+        val content = binding.NoteContent.text.toString()
+        val currentDateAndTime = CurrentDateAndTime().getCurrentDateTime()
 
-        noteViewModel.addNote(note)
+        if (isEditMode) {
+            val updatedNote = Note(
+                id = existingNoteId!!,
+                title = title,
+                content = content,
+                lastModified = currentDateAndTime
+            )
+            noteViewModel.addOrUpdateNote(updatedNote)
+        } else {
+            val newNote = Note(
+                id = UUID.randomUUID().toString(),
+                title = title,
+                content = content,
+                dateCreated = currentDateAndTime,
+                lastModified = currentDateAndTime
+            )
+            noteViewModel.addOrUpdateNote(newNote)
+        }
 
+        parentFragmentManager.popBackStack()
     }
 
     override fun onDestroy() {

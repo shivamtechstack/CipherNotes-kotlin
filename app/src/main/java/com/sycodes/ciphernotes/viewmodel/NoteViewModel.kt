@@ -24,13 +24,10 @@ class NoteViewModel(application: Application): AndroidViewModel(application) {
 
         allNotes = repository.allNotes
 
-        viewModelScope.launch {
-            repository.syncNotesFromFirebase()
-        }
     }
 
-    fun addNote(note: Note) = viewModelScope.launch {
-        repository.addNote(note)
+    fun addOrUpdateNote(note: Note) = viewModelScope.launch {
+        repository.addOrUpdateNote(note)
     }
 
     fun deleteNote(note: Note) = viewModelScope.launch {

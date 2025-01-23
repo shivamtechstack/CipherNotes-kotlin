@@ -12,17 +12,15 @@ class FirestoreRepository {
 
     private val notesCollection = db.collection("users").document(userId!!).collection("notes")
 
-    suspend fun addNote(note: Note) {
+    suspend fun uploadNoteToFirebase(note: Note) {
         notesCollection.document(note.id).set(note).await()
     }
 
-    suspend fun deleteNote(note : Note){
+    suspend fun updateNotesFromFirebase() : List<Note> {
+        return notesCollection.get().await().toObjects(Note::class.java)
+        }
+
+    suspend fun deleteNoteFromFirebase(note: Note) {
         notesCollection.document(note.id).delete().await()
     }
-
-    suspend fun updateNote(note: Note){
-        notesCollection.document(note.id).set(note).await()
-    }
-
-    fun getAllNotes() = notesCollection
 }
