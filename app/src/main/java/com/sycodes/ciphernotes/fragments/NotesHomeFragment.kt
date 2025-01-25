@@ -5,11 +5,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.sycodes.ciphernotes.NoteAdapter
 import com.sycodes.ciphernotes.R
+import com.sycodes.ciphernotes.data.Note
 import com.sycodes.ciphernotes.databinding.FragmentNotesHomeBinding
 import com.sycodes.ciphernotes.viewmodel.NoteViewModel
 
@@ -71,9 +76,29 @@ class NotesHomeFragment : Fragment() {
         return binding.root
     }
 
-    private fun popBottomSheet(note: View) {
+    private fun popBottomSheet(note: Note) {
 
+        val bottomSheetDialog = BottomSheetDialog(requireContext())
+        val bottomSheetView = layoutInflater.inflate(R.layout.note_options_bottom_sheet, null)
 
+        // Get references to the views
+        val noteTitleTextView = bottomSheetView.findViewById<TextView>(R.id.bottom_sheet_note_title)
+        val noteDateCreatedTextView = bottomSheetView.findViewById<TextView>(R.id.bottom_sheet_note_createdDate)
+        val noteModifiedDateTextView = bottomSheetView.findViewById<TextView>(R.id.bottom_sheet_note_modifiedDate)
+        val deleteNoteButton = bottomSheetView.findViewById<FloatingActionButton>(R.id.bottom_sheet_note_DeleteButton)
+
+        // Set note details
+        noteTitleTextView.text = note.title
+        noteDateCreatedTextView.text = note.dateCreated
+
+        // Handle delete button click
+        deleteNoteButton.setOnClickListener {
+            noteViewModel.deleteNote(note) // Ensure your NoteViewModel has a deleteNote() function
+            bottomSheetDialog.dismiss()
+        }
+
+        bottomSheetDialog.setContentView(bottomSheetView)
+        bottomSheetDialog.show()
 
     }
 
