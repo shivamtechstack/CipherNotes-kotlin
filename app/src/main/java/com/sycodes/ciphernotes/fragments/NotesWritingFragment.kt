@@ -17,6 +17,13 @@ class NotesWritingFragment : Fragment() {
     private lateinit var noteViewModel: NoteViewModel
     private var dateAndTime: String? = null
 
+    private var title: String? = null
+    private var content: String? = null
+    private var dateCreated: String? = null
+    private var lastModified: String? = null
+    private var isPinned: Boolean = false
+    private var isFavourite: Boolean = false
+
     private var existingNoteId: String? = null
     private var isEditMode = false
 
@@ -24,6 +31,16 @@ class NotesWritingFragment : Fragment() {
         super.onCreate(savedInstanceState)
         noteViewModel = ViewModelProvider(this)[NoteViewModel::class.java]
         dateAndTime = CurrentDateAndTime().getCurrentDateTime()
+
+        arguments?.let {
+            existingNoteId = it.getString("noteId")
+            title = it.getString("noteTitle")
+            content = it.getString("noteContent")
+            dateCreated = it.getString("noteDateCreated")
+            lastModified = it.getString("noteLastModified")
+            isPinned = it.getBoolean("noteIsPinned")
+            isFavourite = it.getBoolean("noteIsFavourite")
+        }
     }
 
     override fun onCreateView(
@@ -33,18 +50,11 @@ class NotesWritingFragment : Fragment() {
         binding = FragmentNotesWritingBinding.inflate(inflater, container, false)
         binding.dateAndTimeView.text = dateAndTime
 
-        arguments?.let {
-            existingNoteId = it.getString("noteId")
-            val title = it.getString("noteTitle")
-            val content = it.getString("noteContent")
-            val dateCreated = it.getString("noteDateCreated")
+        if (existingNoteId != null) {
+            isEditMode = true
             binding.dateAndTimeView.text = dateCreated
-
-            if (existingNoteId != null) {
-                isEditMode = true
-                binding.NoteTitle.setText(title)
-                binding.NoteContent.setText(content)
-            }
+            binding.NoteTitle.setText(title)
+            binding.NoteContent.setText(content)
         }
 
         binding.saveButton.setOnClickListener {
@@ -59,21 +69,27 @@ class NotesWritingFragment : Fragment() {
         val currentDateAndTime = CurrentDateAndTime().getCurrentDateTime()
 
         if (isEditMode) {
-            noteViewModel.allNotes.value?.find { it.id == existingNoteId }?.let { existingNote ->
-                val updatedNote = existingNote.copy(
+
+           val updatedNote = Note(
+                    id = existingNoteId!!,
                     title = title,
                     content = content,
-                    lastModified = currentDateAndTime
+                    lastModified = currentDateAndTime,
+               isPinned = isPinned,
+               isFavourite = isFavourite,
+                    dateCreated = dateCreated!!,
+               isSynced = false
                 )
-                noteViewModel.addOrUpdateNote(updatedNote)
-            }
+            noteViewModel.addOrUpdateNote(updatedNote)
         } else {
                 val newNote = Note(
                 id = UUID.randomUUID().toString(),
                 title = title,
                 content = content,
                 dateCreated = currentDateAndTime,
-                lastModified = currentDateAndTime
+                lastModified = currentDateAndTime,
+                    isPinned = false,
+                    isFavourite = false,
             )
             noteViewModel.addOrUpdateNote(newNote)
 

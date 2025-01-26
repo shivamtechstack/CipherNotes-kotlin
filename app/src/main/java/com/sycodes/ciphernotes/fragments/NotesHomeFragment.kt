@@ -53,6 +53,9 @@ class NotesHomeFragment : Fragment() {
                 putString("noteTitle", note.title)
                 putString("noteContent", note.content)
                 putString("noteDateCreated", note.dateCreated)
+                putString("noteLastModified", note.lastModified)
+                putBoolean("noteIsPinned", note.isPinned)
+                putBoolean("noteIsFavourite", note.isFavourite)
             }
             val notesWritingFragment = NotesWritingFragment().apply {
                 arguments = bundle
