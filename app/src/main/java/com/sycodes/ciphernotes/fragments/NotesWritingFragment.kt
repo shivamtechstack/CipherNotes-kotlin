@@ -37,6 +37,8 @@ class NotesWritingFragment : Fragment() {
             existingNoteId = it.getString("noteId")
             val title = it.getString("noteTitle")
             val content = it.getString("noteContent")
+            val dateCreated = it.getString("noteDateCreated")
+            binding.dateAndTimeView.text = dateCreated
 
             if (existingNoteId != null) {
                 isEditMode = true
@@ -57,15 +59,16 @@ class NotesWritingFragment : Fragment() {
         val currentDateAndTime = CurrentDateAndTime().getCurrentDateTime()
 
         if (isEditMode) {
-            val updatedNote = Note(
-                id = existingNoteId!!,
-                title = title,
-                content = content,
-                lastModified = currentDateAndTime
-            )
-            noteViewModel.addOrUpdateNote(updatedNote)
+            noteViewModel.allNotes.value?.find { it.id == existingNoteId }?.let { existingNote ->
+                val updatedNote = existingNote.copy(
+                    title = title,
+                    content = content,
+                    lastModified = currentDateAndTime
+                )
+                noteViewModel.addOrUpdateNote(updatedNote)
+            }
         } else {
-            val newNote = Note(
+                val newNote = Note(
                 id = UUID.randomUUID().toString(),
                 title = title,
                 content = content,
@@ -73,13 +76,14 @@ class NotesWritingFragment : Fragment() {
                 lastModified = currentDateAndTime
             )
             noteViewModel.addOrUpdateNote(newNote)
-        }
 
-        parentFragmentManager.popBackStack()
+            isEditMode = true
+            existingNoteId = newNote.id
+        }
     }
+
 
     override fun onDestroy() {
         super.onDestroy()
-
     }
 }

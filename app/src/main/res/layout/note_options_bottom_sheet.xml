@@ -8,9 +8,10 @@
     <TextView
         android:id="@+id/bottom_sheet_note_title"
         android:layout_width="match_parent"
-        android:textSize="17sp"
-        android:layout_marginHorizontal="8dp"
-        android:layout_marginTop="9dp"
+        android:textSize="24sp"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginTop="25dp"
+        android:textStyle="bold"
         android:hint="Note Title"
         android:layout_height="wrap_content"/>
 
@@ -24,7 +25,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="8dp">
+        android:layout_marginHorizontal="15dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -67,13 +68,69 @@
         android:layout_marginVertical="5dp"
         />
 
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:rowCount="1"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="50dp"
+        android:columnCount="5">
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/bottom_sheet_note_DeleteButton"
         android:layout_width="wrap_content"
-        android:layout_marginStart="8dp"
-
+        android:layout_columnWeight="1"
+        android:src="@drawable/trash_24"
+        android:layout_gravity="center"
+        android:layout_marginVertical="5dp"
         android:layout_marginBottom="4dp"
         android:layout_height="wrap_content"
         />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/bottom_sheet_note_PinButton"
+            android:layout_width="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            android:src="@drawable/thumbtack_24"
+            android:layout_columnWeight="1"
+            android:layout_gravity="center"
+            android:layout_marginVertical="5dp"
+            android:layout_marginBottom="4dp"
+            android:layout_height="wrap_content"
+            />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/bottom_sheet_note_FavouriteButton"
+            android:layout_width="wrap_content"
+            android:layout_columnWeight="1"
+            android:src="@drawable/star_24"
+            android:layout_gravity="center"
+            android:layout_marginVertical="5dp"
+            android:layout_marginBottom="4dp"
+            android:layout_height="wrap_content"
+            />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/bottom_sheet_note_LockButton"
+            android:layout_width="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_marginBottom="4dp"
+            android:layout_gravity="center"
+            android:layout_marginVertical="5dp"
+            android:layout_height="wrap_content"
+            />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/bottom_sheet_note_Button"
+            android:layout_width="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_marginBottom="4dp"
+            android:layout_gravity="center"
+            android:layout_marginVertical="5dp"
+            android:layout_height="wrap_content"
+            />
+
+    </GridLayout>
 
 </LinearLayout>

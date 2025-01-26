@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import com.sycodes.ciphernotes.data.Note
 import com.sycodes.ciphernotes.room.NoteDao
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
 class NoteRepository(private val noteDao: NoteDao, private val firestoreRepository: FirestoreRepository) {
@@ -22,5 +21,4 @@ class NoteRepository(private val noteDao: NoteDao, private val firestoreReposito
             noteDao.delete(note.id)
         }
     }
-
 }
